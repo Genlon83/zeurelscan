@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
+
+
+
+<!-- @see http://websystique.com/spring-security/spring-security-4-hibernate-annotation-example/ -->
+<sec:http auto-config='true' create-session="stateless">
+	 <sec:intercept-url pattern="/ordini/**" method="DELETE" access="hasAnyAuthority('Admin','Segreteria')" />	
+	 <sec:intercept-url pattern="/ordini/**" method="POST" access="hasAnyAuthority('Admin','Segreteria')" />	
+     <sec:intercept-url pattern="/ordini/**" method="PUT" access="hasAnyAuthority('Admin','Segreteria')" />	
+     <sec:intercept-url pattern="/kpi/**" method="GET" access="hasAnyAuthority('Admin','Segreteria')" />
+     <sec:intercept-url pattern="/utenti/**" method="POST" access="hasAnyAuthority('Admin','Segreteria')"/>
+     <sec:intercept-url pattern="/utenti/**" method="PUT" access="hasAnyAuthority('Admin','Segreteria')"/>
+     <sec:intercept-url pattern="/utenti/**" method="DELETE" access="hasAnyAuthority('Admin','Segreteria')"/>
+     <sec:intercept-url pattern="/utenti/**" access="permitAll"/>
+     <sec:intercept-url pattern="/feedback/**" access="permitAll"/>
+     <sec:intercept-url pattern="/scheda/**" method="POST" access="hasAnyAuthority('Sales','Sampling')"/>
+     <sec:intercept-url pattern="/scheda/**" method="PUT" access="hasAnyAuthority('Sales','Sampling')"/>
+     <sec:intercept-url pattern="/scheda/**" method="GET" access="permitAll"/>
+     <sec:intercept-url pattern="/**" access="permitAll"/>
+     <sec:http-basic />
+     <sec:csrf disabled="true"/>
+</sec:http>
+
+<!-- @see http://websystique.com/spring-security/spring-security-4-hibernate-annotation-example/ -->
+<sec:authentication-manager>
+	<sec:authentication-provider user-service-ref="customUserDetailsService">
+	 </sec:authentication-provider>
+</sec:authentication-manager>
+
+
+<bean id="customUserDetailsService" class="it.kmakers.java.service.impl.LambWestonUserDetailsService">
+</bean>
+<!-- http://websystique.com/spring-security/spring-security-4-password-encoder-bcrypt-example-with-hibernate/ -->
+ <bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+ 
+ 	<context:annotation-config />
+	<!-- Classpath scanning of @Component, @Service, etc annotated class -->
+	<context:component-scan base-package="it.kmakers.java.servicedao" />
+	<context:component-scan base-package="it.kmakers.java.services" />
+	<context:component-scan base-package="it.kmakers.java.service.impl" />
+	<context:component-scan base-package="it.kmakers.java.generic.impl" />
+
+	<!-- EntityManagerFactory -->
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		id="entityManagerFactory">
+		<property name="persistenceUnitName" value="LambWeston" />
+	</bean>
+
+	<!-- Vedi https://techannotation.wordpress.com/2012/10/04/spring-jta-with-jboss/ -->
+	<bean id="txManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManagerName" value="java:jboss/TransactionManager" />
+		<property name="userTransactionName" value="java:jboss/UserTransaction" />
+	</bean>
+
+	<!-- Enable @Transactional annotation -->
+<!-- 	<tx:annotation-driven transaction-manager="txManager" /> -->
+<!-- 	<tx:jta-transaction-manager /> -->
+
+
+
+	<!-- INSERIRE CONFIGURAZIONE PER LA BASIC AUTHENTICATION -->
+	<!-- ESEMPIO CON SPRING SECURITY BASIC AUTHENTICATION -->
+	 
+	<!-- CREARE LA CLASSE UserDetailService che implementa org.springframework.security.core.userdetails.UserDetailsService -->
+
+	<!-- 
+	<bean id="userDetailsService"
+		class="it.kmakers.mobile.business.service.UserDetailService"> 
+	</bean>
+	
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"></bean>
+
+	<sec:http auto-config="true" disable-url-rewriting="false"
+		authentication-manager-ref="authenticationManager">
+
+		<sec:csrf disabled="true" /> 
+		<sec:intercept-url pattern="/css/**" access="permitAll" />
+		<sec:intercept-url pattern="/images/**" access="permitAll" />
+		<sec:intercept-url pattern="/login" access="permitAll" />
+		<sec:intercept-url pattern="/logout" access="permitAll" />
+		<sec:intercept-url pattern="/view/**" access="isAuthenticated()" />
+
+		<sec:logout invalidate-session="true" logout-success-url="/index.html"
+			logout-url="/logout" />
+		<sec:form-login default-target-url="/view/index.html"
+			login-processing-url="/view/index.html" />
+
+	</sec:http>
+
+	<sec:authentication-manager id="authenticationManager">
+
+		<sec:authentication-provider
+			user-service-ref="userDetailsService">
+			<sec:password-encoder hash="md5" ref="passwordEncoder" />
+		</sec:authentication-provider>
+
+	</sec:authentication-manager>
+
+	<sec:global-method-security
+		pre-post-annotations="enabled"></sec:global-method-security>
+	-->
+</beans>

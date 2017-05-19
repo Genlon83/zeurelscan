@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+	
+	
+	
+	<entity name="Pagina" class="it.zeurelscan.model.Pagina">
+		<named-query name="getPagine">
+			<query>Select p FROM Pagina p</query>
+		</named-query>
+		
+		<named-query name="getPagineBySerieName">
+			<query>Select p FROM Pagina p JOIN p.serie s WHERE s.titolo = :titolo ORDER BY p.numeroCapitolo </query>
+		</named-query>
+	</entity>
+	
+	<entity name="Serie" class="it.zeurelscan.model.Serie">
+		<named-query name="getSerie">
+			<query>Select s FROM Serie s ORDER BY s.titolo </query>
+		</named-query>
+		
+		
+		
+		
+		
+	</entity>
+
+
+	</entity-mappings>

@@ -1,0 +1,12 @@
+it\zeurelscan\dao\SerieDao.class
+it\zeurelscan\service\PaginaService.class
+it\zeurelscan\service\SerieService.class
+it\zeurelscan\model\Pagina.class
+it\zeurelscan\serviceImpl\SerieServiceImpl.class
+it\zeurelscan\dao\impl\SerieDaoImpl.class
+it\zeurelscan\dao\impl\PaginaDaoImpl.class
+it\zeurelscan\dao\PaginaDao.class
+it\zeurelscan\serviceRest\SerieServiceRest.class
+it\zeurelscan\serviceImpl\PaginaServiceImpl.class
+it\zeurelscan\serviceRest\PaginaServiceRest.class
+it\zeurelscan\model\Serie.class
